@@ -4,7 +4,7 @@ describe Rasp::Constraint do
   let(:init_string) { "a." }
   subject { Rasp::Constraint.new(init_string) }
 
-  describe "#export" do
-    specify { subject.export.should eq init_string }
+  describe "#to_asp" do
+    specify { expect(subject.to_asp).to eq init_string }
   end
 end

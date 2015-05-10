@@ -4,7 +4,7 @@ class Rasp::Constraint
     @init_string = init_string
   end
 
-  def export
-    #@init_string
+  def to_asp
+    @init_string
   end
 end
