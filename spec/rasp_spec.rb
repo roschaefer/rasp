@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Rasp do
+describe Asp do
   it 'has a version number' do
-    expect(Rasp::VERSION).not_to be nil
+    expect(Asp::VERSION).not_to be nil
   end
 end

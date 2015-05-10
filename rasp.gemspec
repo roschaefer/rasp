@@ -1,11 +1,11 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'rasp/version'
+require 'asp/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "rasp"
-  spec.version       = Rasp::VERSION
+  spec.version       = Asp::VERSION
   spec.authors       = ["Robert Schäfer"]
   spec.email         = ["robert.schaefer@student.hpi.de"]
 

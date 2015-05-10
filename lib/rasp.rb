@@ -1,6 +1,3 @@
-require "rasp/version"
-require 'rasp/constraint'
-require 'rasp/problem'
-
-module Rasp
-end
+require "asp/version"
+require 'asp/constraint'
+require 'asp/problem'
