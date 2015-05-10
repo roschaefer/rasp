@@ -6,16 +6,16 @@ require 'rasp/version'
 Gem::Specification.new do |spec|
   spec.name          = "rasp"
   spec.version       = Rasp::VERSION
-  spec.authors       = ["Robert Schaefer"]
+  spec.authors       = ["Robert Schäfer"]
   spec.email         = ["robert.schaefer@student.hpi.de"]
 
   if spec.respond_to?(:metadata)
     spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com' to prevent pushes to rubygems.org, or delete to allow pushes to any server."
   end
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Logic programming in ruby with ASP}
+  spec.description   = %q{Provides an API to describe problems in ruby. Generates ASP encodings. Uses the potassco suite to solve them.}
+  spec.homepage      = "https://github.com/roschaefer/rasp"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
