@@ -5,7 +5,6 @@ describe Rasp::Constraint do
   subject { Rasp::Constraint.new(init_string) }
 
   describe "#to_asp" do
-    subject { super().to_asp }
-    it { is_expected.to eq  "a." }
+    its(:to_asp) { is_expected.to eq( "a." )}
   end
 end

@@ -2,11 +2,12 @@ module Rasp
   class Constraint
 
     def initialize(init_string)
-      @init_string = init_string
+      @string_representation = init_string
     end
 
+    # @return [String] A string representing the constraint in ASP
     def to_asp
-      @init_string
+      @string_representation
     end
   end
 end

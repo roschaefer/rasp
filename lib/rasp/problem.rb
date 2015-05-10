@@ -3,5 +3,9 @@ module Rasp
     def satisfiable?
       true
     end
+
+    def solutions
+      [[]]
+    end
   end
 end
