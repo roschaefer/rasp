@@ -18,7 +18,12 @@ module Asp
 
     # @return [Array<Asp::Solution>] all solutions to the problem.
     def solutions
-      solve(@string_encoding)
+      solutions = []
+      solve(@string_encoding) do |solution|
+        solutions << solution
+      end
+      solutions
     end
+
   end
 end
