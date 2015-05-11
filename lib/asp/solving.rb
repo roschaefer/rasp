@@ -1,28 +1,40 @@
 require 'open3'
+require 'tempfile'
+
 module Asp
   module Solving
-    class InvalidSyntaxException
+    class InvalidSyntaxException < StandardError
     end
 
     GROUNDER    = "gringo"
     SOLVER      = "clasp"
 
     def solve(encoding)
-      models = []
+      models = [[]]
       # TODO: try not to use Tempfile
       t = Tempfile.new("asp_solving_temp")
       begin
-        t.write(problem)
+        t.write(encoding)
         t.rewind
+
+        # GROUNDING
         cmd = "#{GROUNDER} #{t.path}"
-        grounded_program, stderr_str, status = Open3.capture3(cmd)
-        status.success? or return
+        grounded_program, stderr, status = Open3.capture3(cmd)
+        stderr.empty? or raise Asp::Solving::InvalidSyntaxException.new
+
         options = []
-        options.push(* SOLVER_OPTS)
+        # SOLVING
+        Open3.popen3(SOLVER, *options) do |stdin, stdout, stderr, wait_thr|
+          stdin.puts grounded_program
+          stdin.close
+        end
+
+
       ensure
         t.close
         t.unlink
       end
+      models
     end
   end
 end
