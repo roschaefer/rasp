@@ -35,8 +35,6 @@ module Asp
             end
           end
         end
-
-
       ensure
         t.close
         t.unlink

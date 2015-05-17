@@ -16,14 +16,29 @@ module Asp
       not satisfiable?
     end
 
-    # @return [Array<Asp::Solution>] all solutions to the problem.
+    # @return [Array<Array<Asp::Element>>] array of array containing all solutions of the problem.
     def solutions
       solutions = []
       solve(@string_encoding) do |solution|
-        solutions << solution
+        solutions << parse(solution)
       end
       solutions
     end
 
+
+    # @todo check for ambiguous matches
+    def parse(solution)
+      result = []
+      solution.each do |value|
+        matches = mind.well_known_classes.collect { |aclass| aclass.from(value) }.compact
+        result << matches.first
+      end
+      result
+    end
+
+    private
+    def mind
+      Asp::Memory.instance
+    end
   end
 end
