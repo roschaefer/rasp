@@ -2,17 +2,26 @@ require 'spec_helper'
 
 describe Asp::Element do
   before(:each) do
-    eval(%{
     class AnElement
       include Asp::Element
+      def self.from(string)
+        if (string.include?("a"))
+          new
+        else
+          nil
+        end
+      end
     end
-         })
   end
 
-  after(:each) { Asp::Memory.instance.forget! }
+  after(:each) do
+      Asp::Memory.instance.forget!
+      Object.send(:remove_const, :AnElement)
+  end
 
-  context "included methods" do
-    specify { expect(AnElement.from("a.")).not_to be_nil }
+  context "overridden included methods" do
+    it { expect(AnElement.from("a")).not_to be_nil }
+    it { expect(AnElement.from("b")).to be_nil }
   end
 
   context "facts only problem" do

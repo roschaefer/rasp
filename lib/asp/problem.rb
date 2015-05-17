@@ -29,7 +29,7 @@ module Asp
     # @todo check for ambiguous matches
     def parse(solution)
       result = []
-      solution.each do |value|
+      solution.each do |key, value|
         matches = mind.well_known_classes.collect { |aclass| aclass.from(value) }.compact
         result << matches.first
       end
