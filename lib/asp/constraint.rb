@@ -10,7 +10,14 @@ module Asp
 
 
     def initialize(&block)
+      block_initialize(&block) if block_given?
+    end
+
+    def block_initialize(&block)
       self.asp_representation = instance_eval(&block) if block_given?
+      unless self.asp_representation.end_with?(".")
+        self.asp_representation << "."
+      end
     end
 
     def never(&block)
@@ -21,5 +28,9 @@ module Asp
       " 1 { " + instance_eval(&block) + " }"
     end
 
+    def conjunct(&block)
+      array = instance_eval(&block)
+      array.join(", ")
+    end
   end
 end

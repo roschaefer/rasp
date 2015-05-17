@@ -11,7 +11,7 @@ module Asp
       end
 
       def asp
-        self.to_s.downcase + "."
+        self.to_s.downcase
       end
     end
   end
