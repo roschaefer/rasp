@@ -10,11 +10,15 @@ module Asp
 
 
     def initialize(&block)
-      instance_eval(&block) if block_given?
+      self.asp_representation = instance_eval(&block) if block_given?
     end
 
     def never(&block)
-      self.asp_representation = ":- " + instance_eval(&block)
+      ":- " + instance_eval(&block)
+    end
+
+    def more_than_one(&block)
+      " 1 { " + instance_eval(&block) + " }"
     end
 
   end
