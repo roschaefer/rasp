@@ -1,13 +1,12 @@
 module Asp
   class Constraint
+    attr_accessor :asp_representation
 
-    def initialize(init_string)
-      @string_representation = init_string
+    def self.from(init_string)
+      instance = self.new
+      instance.asp_representation = init_string
+      instance
     end
 
-    # @return [String] A string representing the constraint in ASP.
-    def to_asp
-      @string_representation
-    end
   end
 end
