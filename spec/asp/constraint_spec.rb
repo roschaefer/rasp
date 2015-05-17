@@ -23,5 +23,15 @@ describe Asp::Constraint do
         expect(constraint.asp_representation).to eq " 1 { b. }"
       end
     end
+
+    context "with Asp::Element classes" do
+      it "default asp representation is lowercased class name" do
+        class SomeClass
+          include Asp::Element
+        end
+        constraint = Asp::Constraint.new { never { SomeClass.asp } }
+        expect(constraint.asp_representation).to eq  ":- someclass."
+      end
+    end
   end
 end

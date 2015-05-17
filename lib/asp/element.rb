@@ -9,6 +9,10 @@ module Asp
       def from(string)
         self.new
       end
+
+      def asp
+        self.to_s.downcase + "."
+      end
     end
   end
 end
