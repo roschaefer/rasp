@@ -21,7 +21,7 @@ module Asp
         # GROUNDING
         cmd = "#{GROUNDER} #{t.path}"
         grounded_program, stderr, status = Open3.capture3(cmd)
-        stderr.empty? or raise Asp::Solving::InvalidSyntaxException.new
+        status.success? or raise Asp::Solving::InvalidSyntaxException.new
 
         # SOLVING
         Open3.popen3(SOLVER, *SOLVER_OPTS) do |stdin, stdout, stderr, wait_thr|

@@ -35,7 +35,6 @@ module Asp
       result = []
       solution.each do |key, value|
         value.each do |element|
-          puts element
           matches = mind.well_known_classes.collect { |aclass| aclass.from(element) }.compact
           result << matches.first
         end
