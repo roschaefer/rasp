@@ -47,6 +47,16 @@ describe "integration test" do
       expected = [SomeClass.from("b")]
       expect(problem.solutions.first).to eq expected
     end
+
+    context "nested with more_than_one" do
+      it "never a." do
+        problem = Asp::Problem.new( "1 { a ; b ; c  }." )
+        constraint = Asp::Constraint.new { never { more_than(2) { "a ; b ; c" } } }
+        problem.add(constraint)
+        expected = [[SomeClass.from("a")], [SomeClass.from("b")], [SomeClass.from("c")]]
+        expect(problem.solutions).to match_array expected
+      end
+    end
   end
 
   context "nonmonotonic reasoning" do

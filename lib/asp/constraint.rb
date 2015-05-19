@@ -25,7 +25,11 @@ module Asp
     end
 
     def more_than_one(&block)
-      " 1 { " + instance_eval(&block) + " }"
+      more_than(1, &block)
+    end
+
+    def more_than(cardinality, &block)
+      " #{cardinality} { " + instance_eval(&block) + " }"
     end
 
     def conjunct(&block)
