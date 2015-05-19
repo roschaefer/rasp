@@ -32,11 +32,21 @@ describe "integration test" do
     expect(problem.solutions.first).to have(3).items
   end
 
-  it "no a. constraint" do
-    problem = Asp::Problem.new( "a. b. c." )
-    constraint = Asp::Constraint.new { never { "a." } }
-    problem.add(constraint)
-    expect(problem.solutions).to be_empty
+  context "never constraint" do
+    it "never a." do
+      problem = Asp::Problem.new( "a. b. c." )
+      constraint = Asp::Constraint.new { never { "a." } }
+      problem.add(constraint)
+      expect(problem.solutions).to be_empty
+    end
+
+    it "never a." do
+      problem = Asp::Problem.new( "1 { a ; b }." )
+      constraint = Asp::Constraint.new { never { "a." } }
+      problem.add(constraint)
+      expected = [SomeClass.from("b")]
+      expect(problem.solutions.first).to eq expected
+    end
   end
 
   context "nonmonotonic reasoning" do
