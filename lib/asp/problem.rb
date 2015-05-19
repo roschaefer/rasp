@@ -6,8 +6,16 @@ module Asp
       @string_encoding = encoding_string
     end
 
-    def add(constraint)
-      @string_encoding += "\n" + constraint.asp_representation
+    def add(knowledge)
+      if (knowledge.respond_to?(:asp_representation))
+          @string_encoding += "\n" + knowledge.asp_representation
+      else
+          @string_encoding += "\n" + knowledge.to_s
+      end
+    end
+
+    def asp_representation
+      @string_encoding
     end
 
     # @return [Boolean] if solutions to the problem exist.
