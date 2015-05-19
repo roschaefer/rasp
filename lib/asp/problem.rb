@@ -6,6 +6,10 @@ module Asp
       @string_encoding = encoding_string
     end
 
+    def add(constraint)
+      @string_encoding += "\n" + constraint.asp_representation
+    end
+
     # @return [Boolean] if solutions to the problem exist.
     def satisfiable?
       not solutions.empty?
