@@ -3,15 +3,16 @@ module Asp
     attr_accessor :asp_representation
     private_class_method :new
 
+    def initialize(opts = {})
+      self.asp_representation = opts[:init_string]
+    end
+
     def self.from(init_string)
-      instance = new
-      instance.asp_representation = init_string
-      instance
+      new(:init_string => init_string)
     end
 
     def self.never(&block)
-      instance = new
-      instance.asp_representation = ":- "
+      instance = new(:init_string => ":- ")
       instance.block_initialize(&block)
       instance
     end
