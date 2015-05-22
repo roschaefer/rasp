@@ -4,14 +4,6 @@ describe "integration test" do
   before(:each) do
     class OutputClass
       include Asp::Element
-
-      def ==(other_object)
-        if other_object.respond_to?(:init_string)
-          self.init_string == other_object.init_string
-        else
-          super
-        end
-      end
     end
 
     class PropertyClass
@@ -31,13 +23,13 @@ describe "integration test" do
     let(:problem) { Asp::Problem.new("a. property(a).") }
 
     it "variables are not set" do
-      problem.add(Asp::Constraint.never { PropertyClass.asp() } )
+      problem.never { PropertyClass.asp() }
       expect(problem.solutions).to be_empty
     end
 
     it "variables are bound" do
-      problem.add(Asp::Constraint.never { PropertyClass.asp(:attribute => "b")  })
-      expect(problem.solutions).to eq [[OutputClass.from("a"), OutputClass.from("property(a)")]]
+      problem.never { PropertyClass.asp(:attribute => "b")  }
+      expect(problem.solutions).to correspond_with [["a", "property(a)"]]
     end
 
   end

@@ -4,15 +4,6 @@ describe "integration test" do
   before(:each) do
     class SomeClass
       include Asp::Element
-
-      def ==(other_object)
-        if other_object.respond_to?(:init_string)
-          self.init_string == other_object.init_string
-        else
-          super
-        end
-      end
-
     end
   end
 
@@ -23,7 +14,7 @@ describe "integration test" do
 
   it "without constraints" do
     problem = Asp::Problem.new( "a. b. c." )
-    expect(problem.solutions.first).to have(3).items
+    expect(problem.solutions).to correspond_with [["a","b","c"]]
   end
 
   context "never constraint" do
@@ -36,16 +27,14 @@ describe "integration test" do
     it "never a." do
       problem = Asp::Problem.new( "1 { a ; b }." )
       problem.never { "a"  }
-      expected = [SomeClass.from("b")]
-      expect(problem.solutions.first).to eq expected
+      expect(problem.solutions).to correspond_with [["b"]]
     end
 
     context "nested with more_than_one" do
       it "never a." do
         problem = Asp::Problem.new( "1 { a ; b ; c  }." )
         problem.never { more_than(2) { "a ; b ; c" } }
-        expected = [[SomeClass.from("a")], [SomeClass.from("b")], [SomeClass.from("c")]]
-        expect(problem.solutions).to match_array expected
+        expect(problem.solutions).to correspond_with [["a"], ["b"], ["c"]]
       end
     end
   end
@@ -54,16 +43,14 @@ describe "integration test" do
     it "statement holds without additional knowledge" do
       problem = Asp::Problem.new "a."
       problem.add(Asp::Constraint.from("c :- a, not b."))
-      expected = [SomeClass.from("a"), SomeClass.from("c")]
-      expect(problem.solutions.first).to eq expected
+      expect(problem.solutions).to correspond_with [["a", "c"]]
     end
 
     it "statement is refuted with additional knowledge" do
       problem = Asp::Problem.new "a."
       problem.add(Asp::Constraint.from("c :- a, not b."))
       problem.add("b.")
-      expected = [SomeClass.from("a"), SomeClass.from("b")]
-      expect(problem.solutions.first).to eq expected
+      expect(problem.solutions).to correspond_with [["a","b"]]
     end
   end
 end
