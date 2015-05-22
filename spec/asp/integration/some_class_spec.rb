@@ -33,7 +33,7 @@ describe "integration test" do
     context "nested with more_than_one" do
       it "never a." do
         problem = Asp::Problem.new( "1 { a ; b ; c  }." )
-        problem.never { more_than(2) { "a ; b ; c" } }
+        problem.never { more_than(1) { "a ; b ; c" } }
         expect(problem.solutions).to correspond_with [["a"], ["b"], ["c"]]
       end
     end

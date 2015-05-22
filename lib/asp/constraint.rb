@@ -24,11 +24,11 @@ module Asp
     end
 
     def more_than(cardinality, &block)
-      "#{cardinality} { " + instance_eval(&block) + " }"
+      "#{cardinality+1} { " + instance_eval(&block) + " }"
     end
 
-    def at_most(cardinality, &block)
-      "{ " + instance_eval(&block) + " } #{cardinality}"
+    def less_than(cardinality, &block)
+      "{ " + instance_eval(&block) + " } #{cardinality-1}"
     end
 
     def conjunct(&block)

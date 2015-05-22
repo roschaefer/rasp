@@ -21,13 +21,13 @@ describe Asp::Constraint do
       describe "#more_than" do
         it "wraps set paranthesis with cardinality" do
           constraint = Asp::Constraint.never { more_than(1) { "b"} }
-          expect(constraint.asp_representation).to eq ":- 1 { b }."
+          expect(constraint.asp_representation).to eq ":- 2 { b }."
         end
       end
 
-      describe "#at_most" do
+      describe "#less_than" do
         it "wraps set paranthesis with cardinality" do
-          constraint = Asp::Constraint.never { at_most(1) { "b"} }
+          constraint = Asp::Constraint.never { less_than(2) { "b"} }
           expect(constraint.asp_representation).to eq ":- { b } 1."
         end
       end
