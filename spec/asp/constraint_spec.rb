@@ -33,6 +33,13 @@ describe Asp::Constraint do
       end
     end
 
+    describe "#conjunct" do
+      it "comma separated items" do
+        constraint = Asp::Constraint.never { conjunct{["a", "b", "c"]} }
+        expect(constraint.asp_representation).to eq ":- a, b, c."
+      end
+    end
+
     context "with Asp::Element classes" do
       before(:each) do
         class SomeClass
@@ -40,7 +47,7 @@ describe Asp::Constraint do
         end
       end
 
-      it "default asp represenation of a class occurs" do
+      it "default asp representation of a class occurs" do
         constraint = Asp::Constraint.never { SomeClass.asp }
         expect(constraint.asp_representation).to eq  ":- someclass."
       end
