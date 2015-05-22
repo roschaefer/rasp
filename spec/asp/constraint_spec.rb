@@ -24,6 +24,13 @@ describe Asp::Constraint do
           expect(constraint.asp_representation).to eq " 1 { b }."
         end
       end
+
+      describe "#at_most" do
+        it "wraps set paranthesis with cardinality" do
+          constraint = Asp::Constraint.new { at_most(1) { "b"} }
+          expect(constraint.asp_representation).to eq " { b } 1."
+        end
+      end
     end
 
     context "with Asp::Element classes" do

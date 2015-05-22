@@ -28,6 +28,10 @@ module Asp
       " #{cardinality} { " + instance_eval(&block) + " }"
     end
 
+    def at_most(cardinality, &block)
+      " { " + instance_eval(&block) + " } #{cardinality}"
+    end
+
     def conjunct(&block)
       array = instance_eval(&block)
       array.join(", ")
