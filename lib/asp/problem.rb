@@ -47,8 +47,10 @@ module Asp
       result = []
       solution.each do |key, value|
         value.each do |element|
-          matches = mind.well_known_classes.collect { |aclass| aclass.from(element) }.compact
-          result << matches.first
+          matching_class = mind.well_known_classes.find { |aclass| aclass.match?(element) }
+          if (matching_class)
+            result << matching_class.new(:init_string => element)
+          end
         end
       end
       result

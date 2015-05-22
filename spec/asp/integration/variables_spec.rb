@@ -4,16 +4,10 @@ describe "integration test" do
   before(:each) do
     class OutputClass
       include Asp::Element
-      attr_accessor :asp_string
-      def self.from(asp_string)
-        instance = self.new
-        instance.asp_string = asp_string
-        instance
-      end
 
       def ==(other_object)
-        if other_object.respond_to?(:asp_string)
-          self.asp_string == other_object.asp_string
+        if other_object.respond_to?(:init_string)
+          self.init_string == other_object.init_string
         else
           super
         end
