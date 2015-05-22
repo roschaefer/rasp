@@ -14,6 +14,10 @@ module Asp
       end
     end
 
+    def never(&block)
+      add(Asp::Constraint.never(&block))
+    end
+
     def asp_representation
       @string_encoding
     end
