@@ -18,7 +18,7 @@ module Asp
 
 
     def block_initialize(&block)
-      self.asp_representation += instance_eval(&block) if block_given?
+      self.asp_representation += instance_eval(&block)
       unless self.asp_representation.end_with?(".")
         self.asp_representation << "."
       end
