@@ -35,14 +35,14 @@ describe "integration test" do
   context "never constraint" do
     it "never a." do
       problem = Asp::Problem.new( "a. b. c." )
-      constraint = Asp::Constraint.new { never { "a." } }
+      constraint = Asp::Constraint.never { "a."  }
       problem.add(constraint)
       expect(problem.solutions).to be_empty
     end
 
     it "never a." do
       problem = Asp::Problem.new( "1 { a ; b }." )
-      constraint = Asp::Constraint.new { never { "a." } }
+      constraint = Asp::Constraint.never { "a."  }
       problem.add(constraint)
       expected = [SomeClass.from("b")]
       expect(problem.solutions.first).to eq expected
@@ -51,7 +51,7 @@ describe "integration test" do
     context "nested with more_than_one" do
       it "never a." do
         problem = Asp::Problem.new( "1 { a ; b ; c  }." )
-        constraint = Asp::Constraint.new { never { more_than(2) { "a ; b ; c" } } }
+        constraint = Asp::Constraint.never { more_than(2) { "a ; b ; c" } }
         problem.add(constraint)
         expected = [[SomeClass.from("a")], [SomeClass.from("b")], [SomeClass.from("c")]]
         expect(problem.solutions).to match_array expected

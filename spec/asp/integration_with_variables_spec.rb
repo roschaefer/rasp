@@ -37,12 +37,12 @@ describe "integration test" do
     let(:problem) { Asp::Problem.new("a. property(a).") }
 
     it "variables are not set" do
-      problem.add(Asp::Constraint.new { never { PropertyClass.asp() } })
+      problem.add(Asp::Constraint.never { PropertyClass.asp() } )
       expect(problem.solutions).to be_empty
     end
 
     it "variables are bound" do
-      problem.add(Asp::Constraint.new { never { PropertyClass.asp(:attribute => "b") } })
+      problem.add(Asp::Constraint.never { PropertyClass.asp(:attribute => "b")  })
       expect(problem.solutions).to eq [[OutputClass.from("a"), OutputClass.from("property(a)")]]
     end
 
