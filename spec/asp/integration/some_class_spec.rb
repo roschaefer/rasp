@@ -35,13 +35,13 @@ describe "integration test" do
   context "never constraint" do
     it "never a." do
       problem = Asp::Problem.new( "a. b. c." )
-      problem.never { "a."  }
+      problem.never { "a"  }
       expect(problem.solutions).to be_empty
     end
 
     it "never a." do
       problem = Asp::Problem.new( "1 { a ; b }." )
-      problem.never { "a."  }
+      problem.never { "a"  }
       expected = [SomeClass.from("b")]
       expect(problem.solutions.first).to eq expected
     end

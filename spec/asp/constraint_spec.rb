@@ -12,7 +12,7 @@ describe Asp::Constraint do
   context "block initialization" do
     describe "::never" do
       it "prepends nil constraint" do
-        constraint = Asp::Constraint.never { "a." }
+        constraint = Asp::Constraint.never { "a" }
         expect(constraint.asp_representation).to eq ":- a."
       end
     end
