@@ -17,10 +17,12 @@ describe Asp::Constraint do
       end
     end
 
-    describe "#more_than_one" do
-      it "wraps set paranthesis with cardinality" do
-        constraint = Asp::Constraint.new { more_than_one { "b"} }
-        expect(constraint.asp_representation).to eq " 1 { b }."
+    context "cardinalities" do
+      describe "#more_than" do
+        it "wraps set paranthesis with cardinality" do
+          constraint = Asp::Constraint.new { more_than(1) { "b"} }
+          expect(constraint.asp_representation).to eq " 1 { b }."
+        end
       end
     end
 

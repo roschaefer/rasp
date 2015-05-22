@@ -24,10 +24,6 @@ module Asp
       ":- " + instance_eval(&block)
     end
 
-    def more_than_one(&block)
-      more_than(1, &block)
-    end
-
     def more_than(cardinality, &block)
       " #{cardinality} { " + instance_eval(&block) + " }"
     end
