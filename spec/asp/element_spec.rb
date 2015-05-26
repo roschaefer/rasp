@@ -23,6 +23,18 @@ describe Asp::Element do
         end
       end
 
+    describe "::asp_schema" do
+      before(:each) do
+        class InputElement
+          include Asp::Element
+          asp_schema :a, :b, :c, :d, :e
+        end
+      end
+      it "defines ::asp_attributes on the class" do
+        expect(InputElement.asp_attributes).to eq [:a, :b, :c, :d, :e]
+      end
+    end
+
       context "uses placeholder as default for attributes" do
         before(:each) { subject.never { InputElement.asp } }
         its(:asp_representation) { is_expected.to eq ":- inputelement(_,_,_)." }

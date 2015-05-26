@@ -37,6 +37,19 @@ module Asp
       def asp_attributes
         []
       end
+
+
+      # Shorthand to define asp attributes
+      #
+      # == Parameters:
+      # format::
+      #   An Array of symbols with the attributes' names
+      # (see ::asp_attributes)
+      def asp_schema(*attributes)
+        define_singleton_method :asp_attributes do
+          attributes
+        end
+      end
     end
   end
 end
