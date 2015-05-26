@@ -2,15 +2,10 @@ require 'spec_helper'
 
 describe "integration test" do
   before(:each) do
-    class OutputClass
+    class Property
       include Asp::Element
-    end
-
-    class InputClass
-      def self.asp(opts={})
-        defaults = { :attribute => "_"}
-        opts = defaults.merge(opts)
-        "property(#{opts[:attribute]})"
+      def self.asp_attributes
+        [:attribute]
       end
     end
   end
@@ -23,12 +18,12 @@ describe "integration test" do
     let(:problem) { Asp::Problem.new("a. property(a).") }
 
     it "variables are not set" do
-      problem.never { InputClass.asp() }
+      problem.never { Property.asp() }
       expect(problem.solutions).to be_empty
     end
 
     it "variables are bound" do
-      problem.never { InputClass.asp(:attribute => "b")  }
+      problem.never { Property.asp(:attribute => "b")  }
       expect(problem.solutions).to correspond_with [["a", "property(a)"]]
     end
   end
