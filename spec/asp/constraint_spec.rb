@@ -49,13 +49,13 @@ describe Asp::Constraint do
 
       it "default asp representation of a class occurs" do
         constraint = Asp::Constraint.never { SomeClass.asp }
-        expect(constraint.asp_representation).to eq  ":- someclass."
+        expect(constraint.asp_representation).to eq  ":- someclass()."
       end
 
       describe "#conjunct" do
         it do
           constraint = Asp::Constraint.never { conjunct {[SomeClass.asp, SomeClass.asp]} }
-          expect(constraint.asp_representation).to eq ":- someclass, someclass."
+          expect(constraint.asp_representation).to eq ":- someclass(), someclass()."
         end
       end
 

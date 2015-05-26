@@ -13,13 +13,16 @@ describe Asp::Element do
     end
 
     subject { Asp::Problem.new }
-    before(:each) { subject.never { InputElement.asp } }
 
     describe "::asp_attributes" do
-      before(:each) { InputElement.send(:define_method,"asp_attributes") do
-        [:attribute_1, :attribute_2, :attribute_3]
+      before(:each) do
+        class InputElement
+          def self.asp_attributes
+            [:attribute_1, :attribute_2, :attribute_3]
+          end
+        end
       end
-      }
+      before(:each) { subject.never { InputElement.asp } }
 
       context "uses placeholder as default for attributes" do
         its(:asp_representation) { is_expected.to eq ":- inputelement(_,_,_)." }

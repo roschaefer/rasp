@@ -2,16 +2,13 @@ module Asp
   class Problem
     include Asp::Solving
 
-    def initialize(encoding_string="")
-      @string_encoding = encoding_string
+    def initialize(encoding_string=nil)
+      @knowledge = []
+      add(encoding_string) if encoding_string
     end
 
     def add(knowledge)
-      if (knowledge.respond_to?(:asp_representation))
-          @string_encoding += "\n" + knowledge.asp_representation
-      else
-          @string_encoding += "\n" + knowledge.to_s
-      end
+      @knowledge << knowledge
     end
 
     def never(&block)
@@ -19,7 +16,14 @@ module Asp
     end
 
     def asp_representation
-      @string_encoding
+      evaluated_knowledge = @knowledge.map do |part|
+        if (part.respond_to?(:asp_representation))
+          part.asp_representation
+        else
+          part.to_s
+        end
+      end
+      evaluated_knowledge.join("\n")
     end
 
     # @return [Boolean] if solutions to the problem exist.
@@ -35,7 +39,7 @@ module Asp
     # @return [Array<Array<Asp::Element>>] array of array containing all solutions of the problem.
     def solutions
       solutions = []
-      solve(@string_encoding) do |solution|
+      solve(self.asp_representation) do |solution|
         solutions << parse(solution)
       end
       solutions
