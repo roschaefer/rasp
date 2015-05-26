@@ -90,7 +90,7 @@ describe Asp::Constraint do
 
         it "many different attributes can be compared across several classes" do
           constraint = Asp::Constraint.never { same(:attribute => "A", :different_attribute => "B") { [SomeClass, AnotherClass, YetAnotherClass] } }
-          expect(constraint.asp_representation).to eq ":- someclass(A), anotherclass(A, B), yetanotherclass(B)."
+          expect(constraint.asp_representation).to eq ":- someclass(A), anotherclass(A,B), yetanotherclass(B)."
         end
       end
 

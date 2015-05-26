@@ -30,6 +30,7 @@ module Asp
         attribute_names_with_underscores = self.asp_attributes.zip(underscores).flatten
         defaults = Hash[*attribute_names_with_underscores]
         opts = defaults.merge(opts)
+        opts = opts.select { |key, value| self.asp_attributes.include?(key) }
         "#{self.to_s.downcase}(#{opts.values.join","})"
       end
 

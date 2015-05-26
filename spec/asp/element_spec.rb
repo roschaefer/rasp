@@ -32,6 +32,11 @@ describe Asp::Element do
         before(:each) { subject.never { InputElement.asp(:attribute_1 => "foo", :attribute_2 => "bar") } }
         its(:asp_representation) { is_expected.to eq ":- inputelement(foo,bar,_)." }
       end
+
+      context "unknown attributes are ignored" do
+        before(:each) { subject.never { InputElement.asp(:something => "foo", :else => "bar") } }
+        its(:asp_representation) { is_expected.to eq ":- inputelement(_,_,_)." }
+      end
     end
 
   end
