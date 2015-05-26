@@ -35,5 +35,10 @@ module Asp
       array = instance_eval(&block)
       array.join(", ")
     end
+
+    def same(attribute_hash={}, &block)
+      class_array = block.call
+      conjunct { class_array.map {|c| c.asp(attribute_hash) } }
+    end
   end
 end

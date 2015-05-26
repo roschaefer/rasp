@@ -59,6 +59,17 @@ describe Asp::Constraint do
         end
       end
 
+
+      describe "same" do
+        it "checks if several classes have the same attribute"  do
+          class AnotherClass
+            include Asp::Element
+          end
+          constraint = Asp::Constraint.never { same(:attribute => "A") { [SomeClass, AnotherClass] } }
+          expect(constraint.asp_representation).to eq ":- someclass(A), anotherclass(A)."
+        end
+      end
+
     end
   end
 end
