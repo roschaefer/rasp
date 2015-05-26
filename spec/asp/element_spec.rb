@@ -1,9 +1,36 @@
 require 'spec_helper'
 
 describe Asp::Element do
+  context "input" do
+    before(:each) do
+      class InputElement
+        include Asp::Element
+      end
+    end
+
+    after(:each) do
+      Asp::Memory.instance.forget!
+    end
+
+    subject { Asp::Problem.new }
+    before(:each) { subject.never { InputElement.asp } }
+
+    describe "::asp_attributes" do
+      before(:each) { InputElement.send(:define_method,"asp_attributes") do
+        [:attribute_1, :attribute_2, :attribute_3]
+      end
+      }
+
+      context "uses placeholder as default for attributes" do
+        its(:asp_representation) { is_expected.to eq ":- inputelement(_,_,_)." }
+      end
+    end
+
+  end
+
   context "output" do
     before(:each) do
-      class AnElement
+      class OutputElement
         include Asp::Element
         def self.from(string)
           if (string.include?("a"))
@@ -20,8 +47,8 @@ describe Asp::Element do
     end
 
     context "included methods can be overriden" do
-      it { expect(AnElement.from("a")).not_to be_nil }
-      it { expect(AnElement.from("b")).to be_nil }
+      it { expect(OutputElement.from("a")).not_to be_nil }
+      it { expect(OutputElement.from("b")).to be_nil }
     end
 
     context "parsing problem solutions" do

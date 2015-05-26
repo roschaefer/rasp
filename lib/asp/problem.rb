@@ -2,7 +2,7 @@ module Asp
   class Problem
     include Asp::Solving
 
-    def initialize(encoding_string)
+    def initialize(encoding_string="")
       @string_encoding = encoding_string
     end
 
