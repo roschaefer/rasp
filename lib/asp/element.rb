@@ -25,11 +25,12 @@ module Asp
         self.new(:init_string => string)
       end
 
-      def asp
+      def asp(opts={})
         underscores = self.asp_attributes.collect { "_" }
         attribute_names_with_underscores = self.asp_attributes.zip(underscores).flatten
         defaults = Hash[*attribute_names_with_underscores]
-        "#{self.to_s.downcase}(#{defaults.values.join","})"
+        opts = defaults.merge(opts)
+        "#{self.to_s.downcase}(#{opts.values.join","})"
       end
 
       def asp_attributes
