@@ -22,10 +22,15 @@ describe Asp::Element do
           end
         end
       end
-      before(:each) { subject.never { InputElement.asp } }
 
       context "uses placeholder as default for attributes" do
+        before(:each) { subject.never { InputElement.asp } }
         its(:asp_representation) { is_expected.to eq ":- inputelement(_,_,_)." }
+      end
+
+      context "placeholder can be overriden" do
+        before(:each) { subject.never { InputElement.asp(:attribute_1 => "foo", :attribute_2 => "bar") } }
+        its(:asp_representation) { is_expected.to eq ":- inputelement(foo,bar,_)." }
       end
     end
 
