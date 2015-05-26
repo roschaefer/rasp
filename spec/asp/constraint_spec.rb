@@ -60,13 +60,37 @@ describe Asp::Constraint do
       end
 
 
-      describe "same" do
-        it "checks if several classes have the same attribute"  do
+      describe "#same" do
+        before(:each) do
+          class SomeClass
+            def self.asp_attributes
+              [:attribute]
+            end
+          end
+
           class AnotherClass
             include Asp::Element
+            def self.asp_attributes
+              [:attribute, :different_attribute]
+            end
           end
+
+          class YetAnotherClass
+            include Asp::Element
+            def self.asp_attributes
+              [:different_attribute]
+            end
+          end
+        end
+
+        it "checks if several classes have the same attribute"  do
           constraint = Asp::Constraint.never { same(:attribute => "A") { [SomeClass, AnotherClass] } }
-          expect(constraint.asp_representation).to eq ":- someclass(A), anotherclass(A)."
+          expect(constraint.asp_representation).to eq ":- someclass(A), anotherclass(A,_)."
+        end
+
+        it "many different attributes can be compared across several classes" do
+          constraint = Asp::Constraint.never { same(:attribute => "A", :different_attribute => "B") { [SomeClass, AnotherClass, YetAnotherClass] } }
+          expect(constraint.asp_representation).to eq ":- someclass(A), anotherclass(A, B), yetanotherclass(B)."
         end
       end
 
