@@ -1,3 +1,4 @@
+require 'asp/constraint/same'
 module Asp
   class Constraint
     attr_accessor :asp_representation
@@ -36,9 +37,8 @@ module Asp
       array.join(", ")
     end
 
-    def same(attribute_hash={}, &block)
-      class_array = block.call
-      conjunct { class_array.map {|c| c.asp(attribute_hash) } }
+    def same(*attributes)
+      Asp::Constraint::Same.new(*attributes)
     end
   end
 end
