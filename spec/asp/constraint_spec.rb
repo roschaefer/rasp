@@ -9,7 +9,7 @@ describe Asp::Constraint do
     end
   end
 
-  context "block initialization" do
+  describe "hard constraints" do
     describe "::never" do
       it "prepends nil constraint" do
         constraint = Asp::Constraint.never { "a" }
@@ -17,16 +17,16 @@ describe Asp::Constraint do
       end
     end
 
-    context "cardinalities" do
+    describe "cardinalities" do
       describe "#more_than" do
-        it "wraps set paranthesis with cardinality" do
+        it "wraps set parenthesis with cardinality" do
           constraint = Asp::Constraint.never { more_than(1) { "b"} }
           expect(constraint.asp_representation).to eq ":- 2 { b }."
         end
       end
 
       describe "#less_than" do
-        it "wraps set paranthesis with cardinality" do
+        it "wraps set parenthesis with cardinality" do
           constraint = Asp::Constraint.never { less_than(2) { "b"} }
           expect(constraint.asp_representation).to eq ":- { b } 1."
         end
@@ -40,7 +40,7 @@ describe Asp::Constraint do
       end
     end
 
-    context "with Asp::Element classes" do
+    context "wrap Asp::Element" do
       before(:each) do
         class SomeClass
           include Asp::Element
