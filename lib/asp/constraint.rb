@@ -1,27 +1,13 @@
 require 'asp/constraint/same'
 module Asp
   class Constraint
-    attr_accessor :asp_representation
-    private_class_method :new
+    attr_reader :asp_representation
 
-    def initialize(opts = {})
-      self.asp_representation = opts[:init_string]
-    end
-
-    def self.from(init_string)
-      new(:init_string => init_string)
-    end
-
-    def self.never(&block)
-      instance = new(:init_string => ":- ")
-      instance.block_initialize(&block)
-      instance
-    end
-
-
-    def block_initialize(&block)
-      self.asp_representation << instance_eval(&block)
-      self.asp_representation << "."
+    def initialize(&block)
+      @asp_representation = ":- "
+      @asp_representation << instance_eval(&block)
+      @asp_representation << "."
+      self
     end
 
     def more_than(cardinality, &block)

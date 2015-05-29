@@ -42,13 +42,13 @@ describe "integration test" do
   context "nonmonotonic reasoning" do
     it "statement holds without additional knowledge" do
       problem = Asp::Problem.new "a."
-      problem.add(Asp::Constraint.from("c :- a, not b."))
+      problem.add("c :- a, not b.")
       expect(problem.solutions).to correspond_with [["a", "c"]]
     end
 
     it "statement is refuted with additional knowledge" do
       problem = Asp::Problem.new "a."
-      problem.add(Asp::Constraint.from("c :- a, not b."))
+      problem.add("c :- a, not b.")
       problem.add("b.")
       expect(problem.solutions).to correspond_with [["a","b"]]
     end

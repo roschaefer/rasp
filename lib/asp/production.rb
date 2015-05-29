@@ -7,6 +7,7 @@ module Asp
       @asp_representation << " :- "
       @asp_representation << instance_eval(&block) if block_given?
       @asp_representation << "."
+      self
     end
 
     def no(&block)

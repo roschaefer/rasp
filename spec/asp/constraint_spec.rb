@@ -1,33 +1,24 @@
 require 'spec_helper'
 
 describe Asp::Constraint do
-  context "string initialization" do
-    subject { Asp::Constraint.from("a.") }
-
-    describe "#to_asp" do
-      its(:asp_representation) { is_expected.to eq( "a." )}
-    end
-  end
 
   describe "hard constraints" do
-    describe "::never" do
-      it "prepends nil constraint" do
-        constraint = Asp::Constraint.never { "a" }
-        expect(constraint.asp_representation).to eq ":- a."
-      end
+    it "asp representation always starts with :-" do
+      constraint = Asp::Constraint.new { "a" }
+      expect(constraint.asp_representation).to eq ":- a."
     end
 
     describe "cardinalities" do
       describe "#more_than" do
         it "wraps set parenthesis with cardinality" do
-          constraint = Asp::Constraint.never { more_than(1) { "b"} }
+          constraint = Asp::Constraint.new { more_than(1) { "b"} }
           expect(constraint.asp_representation).to eq ":- 2 { b }."
         end
       end
 
       describe "#less_than" do
         it "wraps set parenthesis with cardinality" do
-          constraint = Asp::Constraint.never { less_than(2) { "b"} }
+          constraint = Asp::Constraint.new { less_than(2) { "b"} }
           expect(constraint.asp_representation).to eq ":- { b } 1."
         end
       end
@@ -35,7 +26,7 @@ describe Asp::Constraint do
 
     describe "#conjunct" do
       it "comma separated items" do
-        constraint = Asp::Constraint.never { conjunct{["a", "b", "c"]} }
+        constraint = Asp::Constraint.new { conjunct{["a", "b", "c"]} }
         expect(constraint.asp_representation).to eq ":- a, b, c."
       end
     end
@@ -48,13 +39,13 @@ describe Asp::Constraint do
       end
 
       it "default asp representation of a class occurs" do
-        constraint = Asp::Constraint.never { SomeClass.asp }
+        constraint = Asp::Constraint.new { SomeClass.asp }
         expect(constraint.asp_representation).to eq  ":- someclass()."
       end
 
       describe "#conjunct" do
         it do
-          constraint = Asp::Constraint.never { conjunct {[SomeClass.asp, SomeClass.asp]} }
+          constraint = Asp::Constraint.new { conjunct {[SomeClass.asp, SomeClass.asp]} }
           expect(constraint.asp_representation).to eq ":- someclass(), someclass()."
         end
       end
@@ -84,12 +75,12 @@ describe Asp::Constraint do
         end
 
         it "checks if several classes have the same attribute"  do
-          constraint = Asp::Constraint.never { same(:a).for(SomeClass, AnotherClass)  }
+          constraint = Asp::Constraint.new { same(:a).for(SomeClass, AnotherClass)  }
           expect(constraint.asp_representation).to eq ":- someclass(A0), anotherclass(A0,_)."
         end
 
         it "many different attributes can be compared across several classes" do
-          constraint = Asp::Constraint.never { same(:a, :b).for(SomeClass, AnotherClass, YetAnotherClass) }
+          constraint = Asp::Constraint.new { same(:a, :b).for(SomeClass, AnotherClass, YetAnotherClass) }
           expect(constraint.asp_representation).to eq ":- someclass(A0), anotherclass(A0,B1), yetanotherclass(B1)."
         end
       end

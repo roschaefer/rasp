@@ -12,7 +12,7 @@ module Asp
     end
 
     def never(&block)
-      add(Asp::Constraint.never(&block))
+      add(Asp::Constraint.new(&block))
       self
     end
 
