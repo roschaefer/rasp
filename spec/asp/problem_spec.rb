@@ -28,20 +28,18 @@ describe Asp::Problem do
     its(:solutions) { are_expected.to have(2).items }
   end
 
-  describe "#make" do
-    context "without block" do
-      subject { Asp::Problem.new.make("something") }
-      its(:asp_representation) { is_expected.to eq "something :- ." }
-    end
-
-    context "single block" do
-      subject { Asp::Problem.new.make("something") { "for_a_reason" } }
-      its(:asp_representation) { is_expected.to eq "something :- for_a_reason." }
-    end
-
-    context "nested block" do
-      subject { Asp::Problem.new.make("love") { no { "war" }} }
-      its(:asp_representation) { is_expected.to eq "love:- not war." }
+  context "::never" do
+    subject { Asp::Problem.new.never { "say_never" }}
+    it "initializes and adds a constraint" do
+      expect(subject.asp_representation).to eq ":- say_never."
     end
   end
+
+  context "::make" do
+    subject { Asp::Problem.new.make("something") { "up" }}
+    it "initializes and adds a production rule" do
+      expect(subject.asp_representation).to eq "something :- up."
+    end
+  end
+
 end

@@ -13,6 +13,7 @@ module Asp
 
     def never(&block)
       add(Asp::Constraint.never(&block))
+      self
     end
 
     def asp_representation
