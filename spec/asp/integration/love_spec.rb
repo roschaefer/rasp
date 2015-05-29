@@ -3,25 +3,18 @@ describe "dating agency" do
   before(:each) do
     class Love
       include Asp::Element
+      asp_schema :name
       def self.match?(string)
         string.include?("love")
-      end
-
-      def self.asp(opts={})
-        defaults = { :name => "_" }
-        opts = defaults.merge(opts)
-        "love(#{opts[:name]})"
       end
     end
 
     class Person
-      def self.asp(opts={})
-        defaults = { :name => "_",
-                     :sex  => "_",
-                     :relationship_status => "_" }
-        opts = defaults.merge(opts)
-        "person(#{opts[:name]}, #{opts[:sex]}, #{opts[:relationship_status]})"
+      include Asp::Element
+      def self.match?(string)
+        nil
       end
+      asp_schema :name, :sex, :relationship_status
     end
   end
 
