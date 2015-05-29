@@ -16,6 +16,11 @@ module Asp
       self
     end
 
+    def make(result, &block)
+      add(Asp::Production.new(result, &block))
+      self
+    end
+
     def asp_representation
       evaluated_knowledge = @knowledge.map do |part|
         if (part.respond_to?(:asp_representation))
