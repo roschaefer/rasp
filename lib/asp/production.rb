@@ -4,8 +4,10 @@ module Asp
 
     def initialize(result, &block)
       @asp_representation = result.to_s
-      @asp_representation << " :- "
-      @asp_representation << instance_eval(&block) if block_given?
+      if block_given?
+        @asp_representation << " :- "
+        @asp_representation << instance_eval(&block)
+      end
       @asp_representation << "."
       self
     end

@@ -3,7 +3,7 @@ describe Asp::Production  do
   describe "#make" do
     context "without block" do
       subject { Asp::Production.new("anything") }
-      its(:asp_representation) { is_expected.to eq "anything :- ." }
+      its(:asp_representation) { is_expected.to eq "anything." }
     end
 
     context "single block" do
