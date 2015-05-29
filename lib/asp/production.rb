@@ -1,7 +1,5 @@
 module Asp
-  class Production
-    attr_reader :asp_representation
-
+  class Production < Generator
     def initialize(result, &block)
       @asp_representation = result.to_s
       if block_given?
@@ -10,10 +8,6 @@ module Asp
       end
       @asp_representation << "."
       self
-    end
-
-    def no(&block)
-      "not #{instance_eval(&block)}"
     end
   end
 end
