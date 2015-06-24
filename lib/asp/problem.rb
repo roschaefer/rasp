@@ -16,6 +16,11 @@ module Asp
       self
     end
 
+    def avoid(costs, opts={}, &block)
+      add(Asp::SoftConstraint.new(costs, opts={}, &block))
+      self
+    end
+
     def make(result, &block)
       add(Asp::Production.new(result, &block))
       self

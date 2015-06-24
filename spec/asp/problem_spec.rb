@@ -42,4 +42,13 @@ describe Asp::Problem do
     end
   end
 
+  context "::avoid" do
+    subject { Asp::Problem.new.avoid(23) { "scams" }}
+    it "initializes and adds a soft constraint" do
+        expected = %{#const costs_of_penalty = 23.
+                      penalty("penalty", costs_of_penalty) :- scams.}.gsub(/\s\s+/, "\n")
+        expect(subject.asp_representation).to eq expected
+    end
+  end
+
 end
