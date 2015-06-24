@@ -45,10 +45,14 @@ describe Asp::Problem do
   context "::avoid" do
     subject { Asp::Problem.new.avoid(23) { "scams" }}
     it "initializes and adds a soft constraint" do
-        expected = %{#const costs_of_penalty = 23.
-                      penalty("penalty", costs_of_penalty) :- scams.}.gsub(/\s\s+/, "\n")
-        expect(subject.asp_representation).to eq expected
+        expect(subject.asp_representation).to include "#const costs_of_penalty = 23."
+        expect(subject.asp_representation).to include "penalty(\"penalty\", costs_of_penalty) :- scams."
+    end
+
+    it "adds exactly one minimize statement" do
+      subject.avoid(42) { "more_terrible_scams" }
+      optimize_statements = subject.asp_representation.scan("#minimize {C,N : penalty(N,C)}.")
+      expect(optimize_statements).to have(1).item
     end
   end
-
 end

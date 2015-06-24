@@ -3,6 +3,7 @@ module Asp
     include Asp::Solving
 
     def initialize(encoding_string=nil)
+      @optimization = false
       @knowledge = []
       add(encoding_string) if encoding_string
     end
@@ -17,6 +18,10 @@ module Asp
     end
 
     def avoid(costs, opts={}, &block)
+      unless (@optimization)
+        add("#minimize {C,N : penalty(N,C)}.")
+      end
+      @optimization = true
       add(Asp::SoftConstraint.new(costs, opts={}, &block))
       self
     end
