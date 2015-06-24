@@ -24,7 +24,7 @@ describe Asp::Production  do
 
   context "result is an Asp::Element" do
     before(:each) do
-      class DesiredResult 
+      class DesiredResult
         include Asp::Element
       end
       class DesiredResultWithAttributes
