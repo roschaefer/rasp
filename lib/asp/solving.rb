@@ -9,7 +9,7 @@ module Asp
 
     GROUNDER    = "gringo"
     SOLVER      = "clasp"
-    SOLVER_OPTS = ["0", "--outf=2","--quiet=0"]
+    SOLVER_OPTS = ["0", "--outf=2","--quiet=0", "--opt-mode=optN"]
 
     def solve(encoding)
       # TODO: try not to use Tempfile
@@ -29,7 +29,11 @@ module Asp
           stdin.close
           json = JSON.parse(stdout.read)
           witnesses = json["Call"][0]["Witnesses"]
+          n_optimals = json["Models"]["Optimal"]
           if witnesses
+            if n_optimals
+              witnesses = witnesses.last(n_optimals)
+            end
             witnesses.each do |w|
               yield(w)
             end
