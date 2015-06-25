@@ -32,5 +32,16 @@ describe "integration test" do
       problem.avoid(5) { no { "copy(passport)" } }
       expect(problem.solutions).to have(8).items
     end
+
+    it "hopefully you have got all your shots" do
+      problem.avoid(5) { less_than(2) { "vaccination(_)" } }
+      expect(problem.solutions).to have(4).items
+    end
+
+    it "the best is to have all your shots and enough copies of your documents" do
+      problem.avoid(5) { less_than(2) { "vaccination(_)" } }
+      problem.avoid(3) { less_than(2) { "copy(_)" } }
+      expect(problem.solutions).to have(1).item
+    end
   end
 end
