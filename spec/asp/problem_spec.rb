@@ -54,5 +54,11 @@ describe Asp::Problem do
       optimize_statements = subject.asp_representation.scan("#minimize {C,N : penalty(N,C)}.")
       expect(optimize_statements).to have(1).item
     end
+
+
+    it "solutions have costs" do
+      subject.add( "scams.")
+      expect(subject.solutions.first.costs).to eq 23
+    end
   end
 end

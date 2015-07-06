@@ -53,7 +53,7 @@ module Asp
       not satisfiable?
     end
 
-    # @return [Array<Array<Asp::Element>>] array of array containing all solutions of the problem.
+    # @return [Array<Asp::Solution>]
     def solutions
       solutions = []
       solve(self.asp_representation) do |solution|
@@ -64,9 +64,10 @@ module Asp
 
 
     # @todo check for ambiguous matches
-    def parse(solution)
-      result = []
-      solution.each do |key, value|
+    def parse(solution_json)
+      costs = solution_json["Costs"][0] if solution_json["Costs"]
+      result = Asp::Solution.new(costs)
+      solution_json.each do |key, value|
         value.each do |element|
           matching_class = mind.well_known_classes.find { |aclass| aclass.match?(element) }
           if (matching_class)
