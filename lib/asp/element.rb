@@ -21,10 +21,6 @@ module Asp
         true
       end
 
-      def from(string)
-        self.new(:init_string => string)
-      end
-
       def asp(opts={})
         underscores = self.asp_attributes.collect { "_" }
         attribute_names_with_underscores = self.asp_attributes.zip(underscores).flatten
@@ -32,6 +28,14 @@ module Asp
         opts = defaults.merge(opts)
         opts = opts.select { |key, value| self.asp_attributes.include?(key) }
         "#{self.to_s.downcase}(#{opts.values.join","})"
+      end
+
+      def from(string)
+        wildcards = self.asp_attributes.collect { "(.+)" }
+        regex = /#{self.to_s.downcase}\(#{wildcards.join(",")}\)/
+        elements = string.scan(regex)
+        option_hash = Hash[asp_attributes.zip(*elements)]
+        new(option_hash)
       end
 
       def asp_attributes

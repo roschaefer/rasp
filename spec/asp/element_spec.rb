@@ -57,12 +57,20 @@ describe Asp::Element do
     before(:each) do
       class OutputElement
         include Asp::Element
+        attr_reader :a, :b, :c
+        asp_schema :a, :b, :c
         def self.from(string)
           if (string.include?("a"))
-            new
+            super(string)
           else
             nil
           end
+        end
+
+        def initialize(opts={})
+          @a = opts[:a]
+          @b = opts[:b]
+          @c = opts[:c]
         end
       end
     end
@@ -74,6 +82,15 @@ describe Asp::Element do
     context "included methods can be overriden" do
       it { expect(OutputElement.from("a")).not_to be_nil }
       it { expect(OutputElement.from("b")).to be_nil }
+    end
+
+    context "parsing element strings" do
+      it "extracts attributes" do
+        element = OutputElement.from("outputelement(1,aaa,3.5)")
+        expect(element.a).to eq "1"
+        expect(element.b).to eq "aaa"
+        expect(element.c).to eq "3.5"
+      end
     end
 
     context "parsing problem solutions" do
