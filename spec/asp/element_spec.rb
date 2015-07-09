@@ -67,10 +67,10 @@ describe Asp::Element do
           end
         end
 
-        def initialize(opts={})
-          @a = opts[:a]
-          @b = opts[:b]
-          @c = opts[:c]
+        def initialize(asp_init_value={})
+          @a = asp_init_value[:a]
+          @b = asp_init_value[:b]
+          @c = asp_init_value[:c]
         end
       end
     end
@@ -94,7 +94,7 @@ describe Asp::Element do
     end
 
     context "parsing problem solutions" do
-      subject { Asp::Problem.new("a.").solutions }
+      subject { Asp::Problem.new("outputelement(3,42,aaa).").solutions }
       it { is_expected.to have(1).item }
 
       context "first and only solution" do

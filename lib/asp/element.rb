@@ -7,18 +7,24 @@ module Asp
     end
 
     module InstanceMethods
-      def initialize(opts={})
-        @init_string = opts[:init_string]
+      def initialize(asp_init_value={})
+        @asp_init_value = asp_init_value
       end
 
-      def init_string
-        @init_string
+      def asp_representation
+        values = self.class.asp_attributes.collect { |a| @asp_init_value[a] }
+        "#{self.class.to_s.downcase}\(#{values.join(",")}\)"
       end
     end
 
     module ClassMethods
+      def asp_regex
+        wildcards = self.asp_attributes.collect { "(.+)" }
+        /#{self.to_s.downcase}\(#{wildcards.join(",")}\)/
+      end
+
       def match?(string)
-        true
+        string =~ self.asp_regex
       end
 
       def asp(opts={})
@@ -31,9 +37,7 @@ module Asp
       end
 
       def from(string)
-        wildcards = self.asp_attributes.collect { "(.+)" }
-        regex = /#{self.to_s.downcase}\(#{wildcards.join(",")}\)/
-        elements = string.scan(regex)
+        elements = string.scan(self.asp_regex)
         option_hash = Hash[asp_attributes.zip(*elements)]
         new(option_hash)
       end

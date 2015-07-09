@@ -15,7 +15,7 @@ describe "integration test" do
   end
 
   context "variables" do
-    let(:problem) { Asp::Problem.new("a. property(a).") }
+    let(:problem) { Asp::Problem.new("property(a).") }
 
     it "variables are not set" do
       problem.never { Property.asp() }
@@ -24,7 +24,7 @@ describe "integration test" do
 
     it "variables are bound" do
       problem.never { Property.asp(:attribute => "b")  }
-      expect(problem.solutions).to correspond_with [["a", "property(a)"]]
+      expect(problem.solutions).to correspond_with [["property(a)"]]
     end
   end
 end

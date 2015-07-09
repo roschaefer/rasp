@@ -13,8 +13,6 @@ RSpec::Matchers.define :correspond_with do |expected|
       solution.map do |element|
         if element.respond_to?(:asp_representation)
           element.asp_representation
-        elsif element.respond_to?(:init_string)
-          element.init_string
         else
           element.to_s
         end

@@ -53,11 +53,7 @@ describe Asp::Constraint do
 
       describe "#same" do
         before(:each) do
-          class SomeClass
-            def self.asp_attributes
-              [:a]
-            end
-          end
+          allow(SomeClass).to receive(:asp_attributes).and_return([:a])
 
           class AnotherClass
             include Asp::Element

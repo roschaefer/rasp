@@ -4,6 +4,15 @@ describe "integration test" do
   before(:each) do
     class SomeClass
       include Asp::Element
+      def self.match?(string)
+        true
+      end
+      def self.from(string)
+        new(string)
+      end
+      def asp_representation
+        @asp_init_value
+      end
     end
   end
 

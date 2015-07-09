@@ -68,10 +68,10 @@ module Asp
       costs = solution_json["Costs"][0] if solution_json["Costs"]
       result = Asp::Solution.new(costs)
       solution_json.each do |key, value|
-        value.each do |element|
-          matching_class = mind.well_known_classes.find { |aclass| aclass.match?(element) }
+        value.each do |init_string|
+          matching_class = mind.well_known_classes.find{|aclass| aclass.match?(init_string) }
           if (matching_class)
-            result << matching_class.new(:init_string => element)
+            result << matching_class.from(init_string)
           end
         end
       end
