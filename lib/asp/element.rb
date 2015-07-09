@@ -7,7 +7,7 @@ module Asp
     end
 
     module InstanceMethods
-      def initialize(asp_init_value={})
+      def asp_initialize(asp_init_value={})
         @asp_init_value = asp_init_value
       end
 
@@ -39,7 +39,9 @@ module Asp
       def from(string)
         elements = string.scan(self.asp_regex)
         option_hash = Hash[asp_attributes.zip(*elements)]
-        new(option_hash)
+        new_instance = new()
+        new_instance.asp_initialize(option_hash)
+        new_instance
       end
 
       def asp_attributes

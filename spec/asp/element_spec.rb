@@ -67,7 +67,7 @@ describe Asp::Element do
           end
         end
 
-        def initialize(asp_init_value={})
+        def asp_initialize(asp_init_value={})
           @a = asp_init_value[:a]
           @b = asp_init_value[:b]
           @c = asp_init_value[:c]

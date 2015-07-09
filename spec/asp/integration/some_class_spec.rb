@@ -7,6 +7,9 @@ describe "integration test" do
       def self.match?(string)
         true
       end
+      def initialize(string)
+        @asp_init_value = string
+      end
       def self.from(string)
         new(string)
       end
