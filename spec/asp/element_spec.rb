@@ -63,7 +63,7 @@ describe Asp::Element do
           if (string.include?("a"))
             super(string)
           else
-            nil
+            "Something totally different"
           end
         end
 
@@ -80,8 +80,8 @@ describe Asp::Element do
     end
 
     context "included methods can be overriden" do
-      it { expect(OutputElement.from("a")).not_to be_nil }
-      it { expect(OutputElement.from("b")).to be_nil }
+      it { expect(OutputElement.from("outputelement(a,b,c)")).not_to be_nil }
+      it { expect(OutputElement.from("outputelement(b,b,b)")).to eq "Something totally different" }
     end
 
     context "parsing element strings" do

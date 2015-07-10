@@ -58,8 +58,10 @@ module Asp
       solutions = []
       solve(self.asp_representation) do |solution|
         solution =  parse(solution)
-        solution.each do |element|
-          @post_processing.call(solution,element)
+        if @post_processing
+          solution.each do |element|
+            @post_processing.call(solution,element)
+          end
         end
         solutions << solution
       end
