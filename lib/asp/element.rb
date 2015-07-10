@@ -19,7 +19,14 @@ module Asp
 
     module ClassMethods
       def asp_regex
-        wildcards = self.asp_attributes.collect { "(.+)" }
+        wildcards = self.asp_attributes.collect do |attribute|
+          if (attribute.respond_to? :asp_regex)
+            # nested element
+            "(?<#{attribute}>#{attribute.asp_regex.to_s})"
+          else
+            "(?<#{attribute}>.+)"
+          end
+        end
         /#{self.to_s.downcase}\(#{wildcards.join(",")}\)/
       end
 
@@ -37,12 +44,19 @@ module Asp
       end
 
       def from(string)
-        elements = string.scan(self.asp_regex)
-        option_hash = Hash[asp_attributes.zip(*elements)]
         new_instance = new()
-        new_instance.asp_initialize(option_hash)
+        new_instance.asp_initialize(option_hash(string))
         new_instance
       end
+
+      def option_hash(string)
+        matchdata = self.asp_regex.match(string)
+        pairs = self.asp_attributes.collect{|a| [a, matchdata[a.to_s]]}
+        option_hash = Hash[pairs]
+        option_hash.each {|k, v| option_hash[k] = k.option_hash(v) if (k.respond_to?(:option_hash)) }
+        option_hash
+      end
+
 
       def asp_attributes
         []
