@@ -3,6 +3,17 @@ require 'spec_helper'
 describe Asp::Element do
   context "nested elements" do
     before(:each) do 
+
+      class NestedElement
+        include Asp::Element
+        asp_schema :x, :y
+        attr_reader :x, :y
+        def asp_initialize(option_hash)
+          @x = option_hash[:x]
+          @y = option_hash[:y]
+        end
+      end
+
       class ContainerElement
         include Asp::Element
         attr_reader :reference
@@ -19,17 +30,6 @@ describe Asp::Element do
           end
         end
       end
-
-      class NestedElement
-        include Asp::Element
-        asp_schema :x, :y
-        attr_reader :x, :y
-        def asp_initialize(option_hash)
-          @x = option_hash[:x]
-          @y = option_hash[:y]
-        end
-      end
-
     end
 
     after(:each) do
@@ -74,6 +74,15 @@ describe Asp::Element do
         expect(another_element.y).to eq "11"
         expect(container.reference).not_to be_nil
         expect(container.reference).not_to equal(another_element)
+      end
+
+      it "order of terms don't matter, ie. no duplicate matches" do
+        problem.add "containerelement(whut,is,nestedelement(23,42),up)."
+        solution = problem.solutions.first
+        expect(solution).to have(3).items
+        container = solution.last
+        nested = solution[1]
+        expect(container.reference).to equal(nested)
       end
     end
   end

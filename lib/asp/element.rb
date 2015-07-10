@@ -31,7 +31,7 @@ module Asp
       end
 
       def match?(string)
-        string =~ self.asp_regex
+        string =~ /^#{self.asp_regex}$/
       end
 
       def asp(opts={})
