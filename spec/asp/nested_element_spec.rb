@@ -46,5 +46,35 @@ describe Asp::Element do
 
 
 
+    describe "Problem with nested terms" do
+      let(:problem) { Asp::Problem.new "containerelement(foo,bar,nestedelement(23,42), baz). nestedelement(23,42)." }
+      before(:each) do
+        problem.post_processing do |solution, element|
+          if element.respond_to?(:assign_reference)
+            solution.find {|e| element.assign_reference(e) }
+          end
+        end
+      end
+
+      it "assigns the correct reference" do
+        solution = problem.solutions.first
+        expect(solution).to have(2).items
+        container = solution.first
+        nested = solution.last
+        expect(container.reference).to equal(nested)
+      end
+
+      it "doesn't assign the wrong cross-reference" do
+        problem.add "nestedelement(47,11)."
+        solution = problem.solutions.first
+        expect(solution).to have(3).items
+        container = solution.first
+        another_element = solution.last
+        expect(another_element.x).to eq "47"
+        expect(another_element.y).to eq "11"
+        expect(container.reference).not_to be_nil
+        expect(container.reference).not_to equal(another_element)
+      end
+    end
   end
 end
