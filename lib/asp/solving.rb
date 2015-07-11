@@ -6,10 +6,15 @@ module Asp
   module Solving
     class InvalidSyntaxException < StandardError
     end
+    attr_accessor :timeout
 
     GROUNDER    = "gringo"
     SOLVER      = "clasp"
     SOLVER_OPTS = ["0", "--outf=2","--quiet=0", "--opt-mode=optN"]
+
+    def timeout(seconds)
+      @timeout = seconds
+    end
 
     def solve(encoding)
       # TODO: try not to use Tempfile
@@ -23,8 +28,16 @@ module Asp
         grounded_program, stderr, status = Open3.capture3(cmd)
         status.success? or raise Asp::Solving::InvalidSyntaxException.new
 
+
+
+        options = []
+        options.push(* SOLVER_OPTS)
+        if @timeout
+          options << "--time-limit=#{@timeout}"
+        end
+
         # SOLVING
-        Open3.popen3(SOLVER, *SOLVER_OPTS) do |stdin, stdout, stderr, wait_thr|
+        Open3.popen3(SOLVER, *options) do |stdin, stdout, stderr, wait_thr|
           stdin.puts grounded_program
           stdin.close
           json = JSON.parse(stdout.read)

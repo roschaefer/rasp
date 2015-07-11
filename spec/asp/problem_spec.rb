@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'timeout'
 
 describe Asp::Problem do
   context "invalid syntax" do
@@ -28,21 +29,21 @@ describe Asp::Problem do
     its(:solutions) { are_expected.to have(2).items }
   end
 
-  context "::never" do
+  describe "#never" do
     subject { Asp::Problem.new.never { "say_never" }}
     it "initializes and adds a constraint" do
       expect(subject.asp_representation).to eq ":- say_never."
     end
   end
 
-  context "::make" do
+  describe "#make" do
     subject { Asp::Problem.new.make("something") { "up" }}
     it "initializes and adds a production rule" do
       expect(subject.asp_representation).to eq "something :- up."
     end
   end
 
-  context "::avoid" do
+  describe "#avoid" do
     subject { Asp::Problem.new.avoid(23) { "scams" }}
     it "initializes and adds a soft constraint" do
         expect(subject.asp_representation).to include "#const costs_of_penalty_1 = 23."
@@ -59,6 +60,24 @@ describe Asp::Problem do
     it "solutions have costs" do
       subject.add( "scams.")
       expect(subject.solutions.first.costs).to eq 23
+    end
+  end
+
+
+  describe "#timeout" do
+    subject { Asp::Problem.new """
+        1 { sudoku(1..9,Y,N) } 1 :- Y=1..9, N=1..9.
+        1 { sudoku(X,1..9,N) } 1 :- X=1..9, N=1..9.
+        1 { sudoku(X,Y,1..9) } 1 :- X=1..9, Y=1..9.
+
+        :- sudoku(X1,Y1,N), sudoku(X2,Y2,N), (X1,Y1) != (X2,Y2), (((X1-1)/3),((Y1-1)/3)) == (((X2-1)/3), ((Y2-1)/3)).
+      """ }
+
+    it "limits the execution time" do
+      subject.timeout(1)
+      Timeout::timeout(4) do
+        expect(subject.solutions).not_to be_empty
+      end
     end
   end
 end
