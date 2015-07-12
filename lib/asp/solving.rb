@@ -44,8 +44,10 @@ module Asp
           witnesses = json["Call"][0]["Witnesses"]
           n_optimals = json["Models"]["Optimal"]
           if witnesses
+            #JSON_HACK
             if n_optimals
-              witnesses = witnesses.last(n_optimals)
+              witnesses.each {|w| w["Optimal"] = false}
+              witnesses.last(n_optimals).each {|w| w["Optimal"] = true }
             end
             witnesses.each do |w|
               yield(w)

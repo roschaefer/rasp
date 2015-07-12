@@ -61,6 +61,11 @@ describe Asp::Problem do
       subject.add( "scams.")
       expect(subject.solutions.first.costs).to eq 23
     end
+
+    it "solutions are still optimal" do
+      subject.add( "scams.")
+      expect(subject.solutions.first).to be_optimal
+    end
   end
 
 
@@ -80,4 +85,46 @@ describe Asp::Problem do
       end
     end
   end
+
+  describe "#post_processing" do
+    subject { Asp::Problem.new "foobar(x). foobar(y)." }
+    it "calls the block on the solution and each contained element" do
+      class Foobar
+        include Asp::Element
+        asp_schema :a
+      end
+      expect(Foobar).to receive(:block_was_called!).exactly(2).times
+      subject.post_processing do |solution, element|
+        expect(solution).to have(2).items # one solution with two foobars
+        element.class.block_was_called!
+      end
+      subject.solutions
+    end
+  end
+
+  describe "#solutions" do
+    let(:problem) do 
+      problem =  Asp::Problem.new "1 { foo; bar } 1."
+      problem.avoid(23) { "foo" }
+      problem.avoid(42) { "bar" }
+    end
+
+    it "by default, only returns optimal solutions" do
+      solutions = problem.solutions
+      expect(solutions).to have(1).item
+      solution = solutions.first
+      expect(solution).to be_kind_of(Asp::Solution)
+      expect(solution.costs).to eq 23
+      expect(solution).to be_optimal
+    end
+
+    it "with :suboptimal=true, also returns suboptimal solutions" do
+      solutions = problem.solutions(:suboptimal => true)
+      expect(solutions).to have_at_least(2).items
+      suboptimal = solutions.find {|s| s.optimal? == false }
+      expect(suboptimal).not_to be_nil
+      expect(suboptimal.costs).to eq 42
+    end
+  end
+
 end

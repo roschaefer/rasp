@@ -54,16 +54,18 @@ module Asp
     end
 
     # @return [Array<Asp::Solution>]
-    def solutions
+    def solutions(opts = {})
       solutions = []
       solve(self.asp_representation) do |solution|
         solution =  parse(solution)
+        if solution.optimal.nil? || solution.optimal || opts[:suboptimal] # if optimal.nil? then there was no optimization
+          solutions << solution
+        end
         if @post_processing
           solution.each do |element|
             @post_processing.call(solution,element)
           end
         end
-        solutions << solution
       end
       solutions
     end
@@ -75,14 +77,13 @@ module Asp
 
     # @todo check for ambiguous matches
     def parse(solution_json)
+      optimal = solution_json["Optimal"]
       costs = solution_json["Costs"][0] if solution_json["Costs"]
-      result = Asp::Solution.new(costs)
-      solution_json.each do |key, value|
-        value.each do |init_string|
-          matching_class = mind.well_known_classes.find{|aclass| aclass.match?(init_string) }
-          if (matching_class)
-            result << matching_class.from(init_string)
-          end
+      result = Asp::Solution.new(costs, optimal)
+      solution_json["Value"].each do |init_string|
+        matching_class = mind.well_known_classes.find{|aclass| aclass.match?(init_string) }
+        if (matching_class)
+          result << matching_class.from(init_string)
         end
       end
       result
