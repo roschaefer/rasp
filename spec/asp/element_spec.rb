@@ -14,6 +14,12 @@ describe Asp::Element do
 
     subject { Asp::Problem.new }
 
+    describe "::asp_predicate_basename" do
+      it "defines a default predicate basename" do
+        expect(InputElement.asp_predicate_basename).to eq "inputelement"
+      end
+    end
+
     describe "::asp_attributes" do
       before(:each) do
         class InputElement
@@ -23,17 +29,6 @@ describe Asp::Element do
         end
       end
 
-    describe "::asp_schema" do
-      before(:each) do
-        class InputElement
-          include Asp::Element
-          asp_schema :a, :b, :c, :d, :e
-        end
-      end
-      it "defines ::asp_attributes on the class" do
-        expect(InputElement.asp_attributes).to eq [:a, :b, :c, :d, :e]
-      end
-    end
 
       context "uses placeholder as default for attributes" do
         before(:each) { subject.never { InputElement.asp } }
@@ -48,6 +43,19 @@ describe Asp::Element do
       context "unknown attributes are ignored" do
         before(:each) { subject.never { InputElement.asp(:something => "foo", :else => "bar") } }
         its(:asp_representation) { is_expected.to eq ":- inputelement(_,_,_)." }
+      end
+
+      describe "::asp_schema" do
+        before(:each) do
+          class InputElement
+            include Asp::Element
+            asp_schema :a, :b, :c, :d, :e
+          end
+        end
+
+        it "defines ::asp_attributes on the class" do
+          expect(InputElement.asp_attributes).to eq [:a, :b, :c, :d, :e]
+        end
       end
     end
 

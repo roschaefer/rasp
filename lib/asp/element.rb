@@ -13,11 +13,15 @@ module Asp
 
       def asp_representation
         values = self.class.asp_attributes.collect { |a| @asp_init_value[a] }
-        "#{self.class.to_s.downcase}\(#{values.join(",")}\)"
+        "#{self.class.asp_predicate_basename}\(#{values.join(",")}\)"
       end
     end
 
     module ClassMethods
+      def asp_predicate_basename
+        self.to_s.downcase
+      end
+
       def asp_regex
         wildcards = self.asp_attributes.collect do |attribute|
           if (attribute.respond_to? :asp_regex)
@@ -27,7 +31,7 @@ module Asp
             "(?<#{attribute}>.+)"
           end
         end
-        /#{self.to_s.downcase}\(#{wildcards.join(",")}\)/
+        /#{self.asp_predicate_basename}\(#{wildcards.join(",")}\)/
       end
 
       def match?(string)
@@ -40,7 +44,7 @@ module Asp
         defaults = Hash[*attribute_names_with_underscores]
         opts = defaults.merge(opts)
         opts = opts.select { |key, value| self.asp_attributes.include?(key) }
-        "#{self.to_s.downcase}(#{opts.values.join","})"
+        "#{self.asp_predicate_basename}(#{opts.values.join","})"
       end
 
       def from(string)
