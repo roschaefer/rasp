@@ -29,6 +29,12 @@ describe Asp::Problem do
     its(:solutions) { are_expected.to have(2).items }
   end
 
+  describe "#add" do
+    it "returns the problem" do
+      expect(subject.add("this.")).to be_a(Asp::Problem)
+    end
+  end
+
   describe "#never" do
     subject { Asp::Problem.new.never { "say_never" }}
     it "initializes and adds a constraint" do

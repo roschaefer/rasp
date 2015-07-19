@@ -10,6 +10,7 @@ module Asp
 
     def add(knowledge)
       @knowledge << knowledge
+      self
     end
 
     def never(&block)
