@@ -19,7 +19,7 @@ module Asp
 
     def avoid(costs, opts={}, &block)
       if (@soft_constraint_count == 0)
-        add("#minimize {C,N : penalty(N,C)}.")
+        add("#minimize {C,N,V : penalty(N,V,C)}.")
       end
       @soft_constraint_count += 1
       opts[:name] ||= "penalty_#{@soft_constraint_count}"

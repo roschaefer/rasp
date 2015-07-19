@@ -47,12 +47,12 @@ describe Asp::Problem do
     subject { Asp::Problem.new.avoid(23) { "scams" }}
     it "initializes and adds a soft constraint" do
         expect(subject.asp_representation).to include "#const costs_of_penalty_1 = 23."
-        expect(subject.asp_representation).to include "penalty(\"penalty_1\", costs_of_penalty_1) :- scams."
+        expect(subject.asp_representation).to include "penalty(\"penalty_1\", penalty_1(), costs_of_penalty_1) :- scams."
     end
 
     it "adds exactly one minimize statement" do
       subject.avoid(42) { "more_terrible_scams" }
-      optimize_statements = subject.asp_representation.scan("#minimize {C,N : penalty(N,C)}.")
+      optimize_statements = subject.asp_representation.scan("#minimize {C,N,V : penalty(N,V,C)}.")
       expect(optimize_statements).to have(1).item
     end
 
