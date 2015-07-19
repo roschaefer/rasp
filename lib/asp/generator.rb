@@ -14,6 +14,10 @@ module Asp
       "{ " + instance_eval(&block) + " } #{cardinality-1}"
     end
 
+    def exactly(cardinality, &block)
+      "#{cardinality} { " + instance_eval(&block) + " } #{cardinality}"
+    end
+
     def conjunct(&block)
       array = instance_eval(&block)
       array.join(", ")

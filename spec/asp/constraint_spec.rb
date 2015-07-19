@@ -22,6 +22,13 @@ describe Asp::Constraint do
           expect(constraint.asp_representation).to eq ":- { b } 1."
         end
       end
+
+      describe "#exactly" do
+        it "combines #less_than with #more_than" do
+          constraint = Asp::Constraint.new { exactly(1) { "b"} }
+          expect(constraint.asp_representation).to eq ":- 1 { b } 1."
+        end
+      end
     end
 
     describe "#conjunct" do
