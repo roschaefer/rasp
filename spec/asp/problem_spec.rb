@@ -33,6 +33,11 @@ describe Asp::Problem do
     it "returns the problem" do
       expect(subject.add("this.")).to be_a(Asp::Problem)
     end
+
+    it "appends a dot if necessary" do
+      subject.add("a") ; subject.add("b.")
+      expect(subject.asp_representation).to eq "a.\nb."
+    end
   end
 
   describe "#never" do

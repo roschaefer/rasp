@@ -35,11 +35,7 @@ module Asp
 
     def asp_representation
       evaluated_knowledge = @knowledge.map do |part|
-        if (part.respond_to?(:asp_representation))
-          part.asp_representation
-        else
-          part.to_s
-        end
+        sanitize(part)
       end
       evaluated_knowledge.join("\n")
     end
@@ -93,6 +89,17 @@ module Asp
     private
     def mind
       Asp::Memory.instance
+    end
+
+    def sanitize(part)
+      method = [:asp_representation, :asp].find {|m| part.respond_to?(m) }
+      unless method.nil?
+        result = part.send(method)
+      else
+        result = part.to_s
+      end
+      result << "." unless result.end_with?('.')
+      result
     end
   end
 end
