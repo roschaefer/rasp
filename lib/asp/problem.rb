@@ -98,7 +98,8 @@ module Asp
       else
         result = part.to_s
       end
-      result << "." unless result.end_with?('.')
+      result.strip!
+      result << "." unless result.empty? || result.end_with?('.')
       result
     end
   end

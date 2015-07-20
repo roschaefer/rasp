@@ -3,7 +3,7 @@ require 'timeout'
 
 describe Asp::Problem do
   context "invalid syntax" do
-    subject { Asp::Problem.new( "missing_dot" ) }
+    subject { Asp::Problem.new( "double_dot.." ) }
     it { expect{ subject.satisfiable? }.to raise_exception(Asp::Solving::InvalidSyntaxException) }
   end
 
@@ -35,9 +35,10 @@ describe Asp::Problem do
     end
 
     it "appends a dot if necessary" do
-      subject.add("a") ; subject.add("b.")
-      expect(subject.asp_representation).to eq "a.\nb."
+      subject.add("a") ; subject.add("b."); subject.add("c.\n")
+      expect(subject.asp_representation).to eq "a.\nb.\nc."
     end
+
   end
 
   describe "#never" do
